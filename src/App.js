@@ -5,54 +5,47 @@ import { render } from '@testing-library/react';
 import Movie from './movie';
 
 class App extends Component {
-  
-  constructor(props) {
-    super(props);
-    this.state = {
-      title: [],
-      poster: []
-    }
-  }
 
-  UNSAFE_componentWillMount() {
+  state = {}
+
+  componentDidMount() {
     this._getMovies();
   }
 
-  _renderDatas = () => {
-    const i = [1,2,3,4,5,5,6,7,8,9,10];
-    const datas = this.state.movies.map((data, index) => {
-      return <Movie title={data.title} poster={data.poster} key={index} />
+  _renderMovies = () => {
+
+    const movies = this.state.movies.map(movie => {
+      return <Movie
+        title={movie.title_english}
+        poster={movie.medium_cover_image}
+        key={movie.id}
+        genres={movie.genres} 
+        synopsis={movie.synopsis}
+        />
     })
-    return datas;
+    return movies
   }
 
   _getMovies = async () => {
-    const datas = await this._callApi()
+    const movies = await this._callApi()
     this.setState({
-      datas
+      movies
     })
   }
 
   _callApi = () => {
-    return fetch('http://www.kobis.or.kr/kobisopenapi/webservice/rest/movie/searchMovieList.json?key=e55a7610dadf4359d3729ab503c7205f')
+    return fetch('https://yts.lt/api/v2/list_movies.json/sort_by=rating')
       .then(res => res.json())
-      .then(json => json.movieListResult.movieList/*this.setState({
-        movies : [
-        {
-          title: json.movieListResult.movieList[9].movieNm,
-          poster: json.movieListResult.movieList[9].movieCd
-        }
-      ]
-
-    })*/
-    )
-    .then(err => console.log(err));
+      .then(json => json.data.movies)
+      // .then(json => console.log(json))
+      .catch(err => console.log(err));
   }
 
   render() {
     return (
-      <h1>{this.state.movies ? this._renderDatas() : "loading.."}</h1>
-      /*<div className="App"> </div>*/
+      <div className="App">
+        {this.state.movies ? this._renderMovies() : "loading.."}
+      </div>
     );
   }
 }
