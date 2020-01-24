@@ -1,51 +1,50 @@
-import React, { Component } from 'react';
-import './App.css';
-import { renderIntoDocument } from 'react-dom/test-utils';
-import { render } from '@testing-library/react';
-import Movie from './movie';
+import React from "react";
+import axios from "axios";
+import Movie from "./movie";
+import "./App.css";
 
-class App extends Component {
-
-  state = {}
-
+class App extends React.Component {
+  state = {
+    isLoading: true,
+    movies: []
+  };
+  getMovies = async () => {
+    const {
+      data: {
+        data: { movies }
+      }
+    } = await axios.get(
+      "https://yts-proxy.now.sh/list_movies.json?sort_by=rating"
+    );
+    this.setState({ movies, isLoading: false });
+  };
   componentDidMount() {
-    this._getMovies();
+    this.getMovies();
   }
-
-  _renderMovies = () => {
-
-    const movies = this.state.movies.map(movie => {
-      return <Movie
-        title={movie.title_english}
-        poster={movie.medium_cover_image}
-        key={movie.id}
-        genres={movie.genres} 
-        synopsis={movie.synopsis}
-        />
-    })
-    return movies
-  }
-
-  _getMovies = async () => {
-    const movies = await this._callApi()
-    this.setState({
-      movies
-    })
-  }
-
-  _callApi = () => {
-    return fetch('https://yts.lt/api/v2/list_movies.json/sort_by=rating')
-      .then(res => res.json())
-      .then(json => json.data.movies)
-      // .then(json => console.log(json))
-      .catch(err => console.log(err));
-  }
-
   render() {
+    const { isLoading, movies } = this.state;
     return (
-      <div className="App">
-        {this.state.movies ? this._renderMovies() : "loading.."}
-      </div>
+      <section className="container">
+        {isLoading ? (
+          <div className="loader">
+            <span className="loader__text">Loading...</span>
+          </div>
+        ) : (
+          <div className="movies">
+            {movies.map(movie => (
+              <Movie
+                key={movie.id}
+                id={movie.id}
+                year={movie.year}
+                title={movie.title}
+                summary={movie.summary}
+                poster={movie.medium_cover_image}
+                genres={movie.genres}
+              />
+            ))}
+          </div>
+        )}
+      </section>
     );
   }
 }
