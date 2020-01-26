@@ -38,13 +38,14 @@ github 기능중 static파일들을 공짜로 호스팅해주는 gh-pages를 이
 ## Deploy #2 - https://movie-app-sangboom.netlify.com/
 
 ```
-...
 "start_url":".",
-...
 ```
-이 부분때문에 `package.json` 의 homepage 부분을 `"homepage": "."` 로 수정해야 정상적으로 배포된다.
+menufast에 저 코드 때문에 `package.json` 에서 homepage 부분을 `"homepage": "."` 로 수정해야 정상적으로 배포된다.
+
+귀찮으니까 netlify로는 배포안할꺼임. gh pages로 배포하고 또 바꿔줘야됨. 진짜 
+
 ***
-***
+
 ```
 function App(){
   return <HashRouter>
@@ -53,7 +54,6 @@ function App(){
   </HashRouter>
 }
 ```
-***
 url/#/about 하면 /와 /about 컴포넌트 둘다 렌더링해서 같이 보여주게됨.
 
 exact={true}로 설정하면 / 일때만 렌더링하게끔 해준다. /something 이여도 렌더링 안됨
