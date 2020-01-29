@@ -12,7 +12,7 @@ function component 가 있는데 왜 class component를 쓰냐? state를 쓰려�
 setstate : setstate를 호출할때 마다 react는 새로운 state와 함께 render function을 호출한다. 
 
 ( = setstate를 호출할때 마다 새로운 state와 함께 리렌더링한다.)
-```
+```javascript
 this.setstate({count : this.state.count + 1 });      
 //둘이 같은 코드
 this.setstate(current => ({ count: current.count + 1 }));
@@ -37,7 +37,7 @@ github 기능중 static파일들을 공짜로 호스팅해주는 gh-pages를 이
 ***
 ## Deploy #2 - https://movie-app-sangboom.netlify.com/
 
-```
+```javascript
 "start_url":".",
 ```
 menufast에 저 코드 때문에 `package.json` 에서 homepage 부분을 `"homepage": "."` 로 수정해야 정상적으로 배포된다.
@@ -46,7 +46,7 @@ menufast에 저 코드 때문에 `package.json` 에서 homepage 부분을 `"home
 
 ***
 
-```
+```javascript
 function App(){
   return <HashRouter>
     <Route path="/" exact={true} component={Home}/>      
@@ -68,7 +68,7 @@ Router 안에는 navigation이 있어야됨.
 
 ***
 영화 목록들중 한개를 누르면 그 영화에 대한 자세한 정보가 나오도록 하고싶다. 그러기 위해선 route props를 알아야된다.
-```
+```javascript
 function Movie({ year, title, summary, poster, genres }) {
   return (
     <Link
@@ -87,7 +87,7 @@ function App() {
 ```
 영화 상세정보를 클릭해서 자세히 보고싶을땐? ex) localhost:3000/#/movie/3709
 ***
-```
+```javascript
 function Movie({ id, year, title, summary, poster, genres }) {
   return (
     <Link
